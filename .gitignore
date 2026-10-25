@@ -1,0 +1,39 @@
+# OpenCode runtime
+/config/
+/data/
+/secrets/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+**/auth.json
+**/credentials.json
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+
+# Runtime and generated data
+*.log
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+dist/
+build/
+.cache/
+
+# Backup archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.bak
+
+# Local editor
+.vscode/
+.idea/

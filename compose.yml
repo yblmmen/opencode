@@ -1,0 +1,49 @@
+services:
+  opencode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: local/opencode:2.0.7
+    container_name: opencode
+
+    working_dir: /home/toss
+
+    user: "0:0"
+
+    stdin_open: true
+    tty: true
+
+    environment:
+      HOME: /root
+      TERM: xterm-256color
+      XDG_CONFIG_HOME: /root/.config
+      XDG_DATA_HOME: /root/.local/share
+      XDG_CACHE_HOME: /root/.cache
+
+    secrets:
+      - ollama_api_key
+
+    volumes:
+      # 실제 프로젝트 소스
+      - /home/toss:/home/toss
+
+      # OpenCode 설정 및 세션 데이터
+      - ./config:/root/.config/opencode
+      - ./data/share:/root/.local/share/opencode
+      - ./data/cache:/root/.cache/opencode
+
+    entrypoint:
+      - /bin/sh
+      - -c
+
+    command:
+      - |
+        export OLLAMA_API_KEY="$$(cat /run/secrets/ollama_api_key)"
+        exec opencode
+
+    restart: "no"
+
+secrets:
+  ollama_api_key:
+    file: ./secrets/ollama_api_key
