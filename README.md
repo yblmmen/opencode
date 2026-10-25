@@ -1,6 +1,6 @@
 # OpenCode · Cilium Hubble · TCP Lifecycle Monitor v2
 
-> **기준 환경:** Kubernetes v1.36.x / Rocky Linux 9.8 / containerd / master1(192.168.9.221), worker1~3. 기존 Cilium/Hubble Relay는 정상 운영 중이며 **변경하지 않습니다**.
+> **기준 환경:** Kubernetes v1.36.x / Rocky Linux 9.8 / containerd / master1(192.168.9.221), worker1~3
 >
 > **목표:** 과거 OpenCode 설치를 백업·완전 삭제한 후 v2를 새로 배포합니다. 전체 네임스페이스 Hubble 흐름, 실시간 관계도, IP별 TCP SYN/SYN/ACK/ACK/FIN/RST·Drop 분석, Grafana/Prometheus, Cloudflare Tunnel 포함. Draw.io 제외.
 
