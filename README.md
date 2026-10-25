@@ -23,7 +23,8 @@
 | 백업 위치 | `/root/opencode-backups/` |
 
 ### 구성도
-![Uploading image.png…](https://chatgpt.com/c/6add8119-f788-83e8-83a7-e560a1813dcb)
+
+<img width="1087" height="825" alt="image" src="https://github.com/user-attachments/assets/ce94e71b-a870-4bd9-b9cd-ff9e2066560e" />
 
  
 
