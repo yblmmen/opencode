@@ -23,8 +23,9 @@
 | 백업 위치 | `/root/opencode-backups/` |
 
 ### 구성도
+![Uploading image.png…]()
 
-![v2 구성도](architecture.svg)
+ 
 
 - 기존 Cilium/Hubble은 모든 네임스페이스의 네트워크 이벤트를 Relay에서 제공.
 - `hubble-collector`는 TCP/UDP Flow를 수집하고 대시보드의 인증된 수집 API로 전송.
