@@ -1,0 +1,25 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.1.1, pluggy-1.6.0 -- /home/toss/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/toss
+plugins: platformdirs-4.12.3, anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 9 items
+
+tests/test_market.py::test_daily_ma_and_month_ohlcv PASSED               [ 11%]
+tests/test_market.py::test_stale_cache_retains_good_data PASSED          [ 22%]
+tests/test_market.py::test_candle_pagination_deduplicates_inclusive_boundary PASSED [ 33%]
+tests/test_market.py::test_flows_amount_not_volume PASSED                [ 44%]
+tests/test_market.py::test_holdings_units_and_fractional_rate PASSED     [ 55%]
+tests/test_market.py::test_no_trading_paths PASSED                       [ 66%]
+tests/test_market.py::test_oauth_single_flight_and_401_refresh PASSED    [ 77%]
+tests/test_market.py::test_api_routes PASSED                             [ 88%]
+tests/test_market.py::test_yahoo_long_history_cached_and_recent_refreshed PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/test_market.py::test_daily_ma_and_month_ohlcv
+  /home/toss/venv/lib/python3.14/site-packages/pandas/core/resample.py:2359: DeprecationWarning: The 'generic' unit for NumPy timedelta is deprecated, and will raise an error in the future. This includes implicit conversion of bare integers (e.g. `+ 1`). Please use a specific unit instead.
+    + Timedelta(days=1, unit=edges_dti.unit).as_unit(edges_dti.unit)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 9 passed, 1 warning in 3.69s =========================

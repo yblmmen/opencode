@@ -1,0 +1,100 @@
+[
+    {
+        "symbol": "^IXIC",
+        "name": "\ub098\uc2a4\ub2e5 \uc885\ud569",
+        "unit": "pt",
+        "source": "Yahoo Finance",
+        "data": {
+            "symbol": "^IXIC",
+            "price": 25955.33984375,
+            "change_pct": -0.2057742343804736,
+            "as_of": "2026-10-23T04:00:00+00:00",
+            "source": "Yahoo Finance",
+            "delayed": true
+        },
+        "fetched_at": "2026-10-25T04:12:49.986194+00:00",
+        "status": "ok",
+        "stale": false
+    },
+    {
+        "symbol": "^DJI",
+        "name": "\ub2e4\uc6b0\uc874\uc2a4",
+        "unit": "pt",
+        "source": "Yahoo Finance",
+        "data": {
+            "symbol": "^DJI",
+            "price": 52215.16015625,
+            "change_pct": -1.2348122752407376,
+            "as_of": "2026-10-23T04:00:00+00:00",
+            "source": "Yahoo Finance",
+            "delayed": true
+        },
+        "fetched_at": "2026-10-25T04:12:49.968047+00:00",
+        "status": "ok",
+        "stale": false
+    },
+    {
+        "symbol": "^GSPC",
+        "name": "S&P 500",
+        "unit": "pt",
+        "source": "Yahoo Finance",
+        "data": {
+            "symbol": "^GSPC",
+            "price": 7623.68017578125,
+            "change_pct": -0.5186972294159098,
+            "as_of": "2026-10-23T04:00:00+00:00",
+            "source": "Yahoo Finance",
+            "delayed": true
+        },
+        "fetched_at": "2026-10-25T04:12:49.490525+00:00",
+        "status": "ok",
+        "stale": false
+    },
+    {
+        "symbol": "KOSPI",
+        "name": "\ucf54\uc2a4\ud53c",
+        "unit": "pt",
+        "source": "Toss",
+        "data": null,
+        "fetched_at": null,
+        "status": "unavailable",
+        "stale": true,
+        "error": "\ud1a0\uc2a4 API \ud0a4 \ubbf8\uc124\uc815"
+    },
+    {
+        "symbol": "KOSDAQ",
+        "name": "\ucf54\uc2a4\ub2e5",
+        "unit": "pt",
+        "source": "Toss",
+        "data": null,
+        "fetched_at": null,
+        "status": "unavailable",
+        "stale": true,
+        "error": "\ud1a0\uc2a4 API \ud0a4 \ubbf8\uc124\uc815"
+    },
+    {
+        "symbol": "^KS200",
+        "name": "\ucf54\uc2a4\ud53c 200",
+        "unit": "pt",
+        "source": "Yahoo Finance",
+        "data": {
+            "symbol": "^KS200",
+            "price": 862.77001953125,
+            "change_pct": null,
+            "as_of": "2026-10-22T15:00:00+00:00",
+            "source": "Yahoo Finance",
+            "delayed": true
+        },
+        "fetched_at": "2026-10-25T04:12:46.870706+00:00",
+        "status": "ok",
+        "stale": false
+    },
+    {
+        "symbol": "CL=F",
+        "name": "WTI \uc6d0\uc720 \uc120\ubb3c",
+        "unit": "USD / \ubc30\ub7f4",
+        "source": "Yahoo Finance",
+        "data": {
+            "symbol": "CL=F",
+            "price": 103.2699966430664,
+            "change_pct": 3.820242661837203,

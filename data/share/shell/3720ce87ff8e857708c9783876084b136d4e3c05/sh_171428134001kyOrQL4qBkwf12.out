@@ -1,0 +1,266 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.1.1, pluggy-1.6.0 -- /home/toss/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/toss
+plugins: platformdirs-4.12.3, anyio-4.15.1, asyncio-1.4.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 2 items
+
+tests/test_mcp_integration.py::test_mcp_transport_tools_and_call FAILED  [ 50%]
+tests/test_mcp_integration.py::test_agent_calls_real_mcp_then_model FAILED [100%]
+
+=================================== FAILURES ===================================
+______________________ test_mcp_transport_tools_and_call _______________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/toss/tests/test_mcp_integration.py", line 7, in test_mcp_transport_tools_and_call
+  |     async with streamablehttp_client("http://127.0.0.1:8001/mcp") as (read,write,_):
+  |                ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/lib/python3.14/contextlib.py", line 235, in __aexit__
+  |     await self.gen.athrow(value)
+  |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 742, in streamablehttp_client
+  |     async with streamable_http_client(
+  |                ~~~~~~~~~~~~~~~~~~~~~~^
+  |         url,
+  |         ^^^^
+  |         http_client=client,
+  |         ^^^^^^^^^^^^^^^^^^^
+  |         terminate_on_close=terminate_on_close,
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     ) as streams:
+  |     ^
+  |   File "/usr/lib/python3.14/contextlib.py", line 235, in __aexit__
+  |     await self.gen.athrow(value)
+  |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 672, in streamable_http_client
+  |     async with anyio.create_task_group() as tg:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/home/toss/venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    |     yield
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    |     stream = await self._connect(request)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    |     stream = await self._network_backend.connect_tcp(**kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    |     return await self._backend.connect_tcp(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    |     with map_exceptions(exc_map):
+    |          ~~~~~~~~~~~~~~^^^^^^^^^
+    |   File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    |     raise to_exc(exc) from exc
+    | httpcore.ConnectError: All connection attempts failed
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/toss/venv/lib/python3.14/site-packages/anyio/_core/_tasks.py", line 327, in _run_coro
+    |     retval = await self._coro
+    |              ^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 583, in handle_request_async
+    |     await self._handle_post_request(ctx)
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 361, in _handle_post_request
+    |     async with stream_within_origin(
+    |                ~~~~~~~~~~~~~~~~~~~~^
+    |         ctx.client,
+    |         ^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         headers=headers,
+    |         ^^^^^^^^^^^^^^^^
+    |     ) as response:
+    |     ^
+    |   File "/usr/lib/python3.14/contextlib.py", line 214, in __aenter__
+    |     return await anext(self.gen)
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/shared/_httpx_utils.py", line 132, in stream_within_origin
+    |     response = await client.send(request, stream=True, follow_redirects=False)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    |     with map_httpcore_exceptions():
+    |          ~~~~~~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    |     raise mapped_exc(message) from exc
+    | httpx.ConnectError: All connection attempts failed
+    +------------------------------------
+_____________________ test_agent_calls_real_mcp_then_model _____________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/toss/tests/test_mcp_integration.py", line 23, in test_agent_calls_real_mcp_then_model
+  |     result=await run_agent("삼성전자 시세",[])
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/toss/app/agent.py", line 15, in run_agent
+  |     async with streamablehttp_client(os.getenv("MCP_URL", "http://127.0.0.1:8001/mcp")) as (read, write, _):
+  |                ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/lib/python3.14/contextlib.py", line 235, in __aexit__
+  |     await self.gen.athrow(value)
+  |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 742, in streamablehttp_client
+  |     async with streamable_http_client(
+  |                ~~~~~~~~~~~~~~~~~~~~~~^
+  |         url,
+  |         ^^^^
+  |         http_client=client,
+  |         ^^^^^^^^^^^^^^^^^^^
+  |         terminate_on_close=terminate_on_close,
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     ) as streams:
+  |     ^
+  |   File "/usr/lib/python3.14/contextlib.py", line 235, in __aexit__
+  |     await self.gen.athrow(value)
+  |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 672, in streamable_http_client
+  |     async with anyio.create_task_group() as tg:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/home/toss/venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    |     yield
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    |     resp = await self._pool.handle_async_request(req)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    |     raise exc from None
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    |     response = await connection.handle_async_request(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         pool_request.request
+    |         ^^^^^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    |     raise exc
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    |     stream = await self._connect(request)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    |     stream = await self._network_backend.connect_tcp(**kwargs)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    |     return await self._backend.connect_tcp(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<5 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    |     with map_exceptions(exc_map):
+    |          ~~~~~~~~~~~~~~^^^^^^^^^
+    |   File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    |     raise to_exc(exc) from exc
+    | httpcore.ConnectError: All connection attempts failed
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/toss/venv/lib/python3.14/site-packages/anyio/_core/_tasks.py", line 327, in _run_coro
+    |     retval = await self._coro
+    |              ^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 583, in handle_request_async
+    |     await self._handle_post_request(ctx)
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/client/streamable_http.py", line 361, in _handle_post_request
+    |     async with stream_within_origin(
+    |                ~~~~~~~~~~~~~~~~~~~~^
+    |         ctx.client,
+    |         ^^^^^^^^^^^
+    |     ...<3 lines>...
+    |         headers=headers,
+    |         ^^^^^^^^^^^^^^^^
+    |     ) as response:
+    |     ^
+    |   File "/usr/lib/python3.14/contextlib.py", line 214, in __aenter__
+    |     return await anext(self.gen)
+    |            ^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/mcp/shared/_httpx_utils.py", line 132, in stream_within_origin
+    |     response = await client.send(request, stream=True, follow_redirects=False)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1629, in send
+    |     response = await self._send_handling_auth(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<4 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    |     response = await self._send_handling_redirects(
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<3 lines>...
+    |     )
+    |     ^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    |     response = await self._send_single_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    |     response = await transport.handle_async_request(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    |     with map_httpcore_exceptions():
+    |          ~~~~~~~~~~~~~~~~~~~~~~~^^
+    |   File "/usr/lib/python3.14/contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "/home/toss/venv/lib/python3.14/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    |     raise mapped_exc(message) from exc
+    | httpx.ConnectError: All connection attempts failed
+    +------------------------------------
+=============================== warnings summary ===============================
+tests/test_mcp_integration.py::test_mcp_transport_tools_and_call
+tests/test_mcp_integration.py::test_agent_calls_real_mcp_then_model
+  /usr/lib/python3.14/contextlib.py:109: DeprecationWarning: Use `streamable_http_client` instead.
+    self.gen = func(*args, **kwds)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_mcp_integration.py::test_mcp_transport_tools_and_call - Con...
+FAILED tests/test_mcp_integration.py::test_agent_calls_real_mcp_then_model - ...
+======================== 2 failed, 2 warnings in 1.38s =========================

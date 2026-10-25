@@ -1,0 +1,25 @@
+total 451912
+drwxr-xr-x   12 root     root          4096 Oct 10 07:08 .
+drwxr-xr-x    1 root     root            18 Oct 25 04:09 ..
+-rw-r--r--    1 root     root            64 Oct  7 01:39 .dockerignore
+-rw-------    1 root     root           737 Oct  7 01:45 .env
+-rw-r--r--    1 root     root           594 Oct 10 01:34 .env.example
+-rw-r--r--    1 root     root            96 Oct  7 01:39 .gitignore
+drwxr-xr-x    3 root     root            70 Oct 10 07:08 .pytest_cache
+-rw-r--r--    1 root     root           663 Oct 10 02:01 AGENTS.md
+-rw-r--r--    1 root     root          9007 Oct 10 02:49 CHANGES_MANUAL.md
+-rw-r--r--    1 root     root           461 Oct  7 01:39 Dockerfile
+-rw-r--r--    1 root     root         21346 Oct  7 01:55 README_설치운영.md
+drwxr-xr-x    4 root     root           148 Oct 10 01:35 app
+drwxr-xr-x    2 root     root            29 Oct  7 15:08 docs
+drwxr-xr-x    2 root     root            48 Oct  7 15:08 k8s
+drwxr-xr-x    2 root     root           103 Oct  7 15:08 n8n
+drwxr-xr-x    3 root     root            20 Oct  7 15:09 nfs
+-rw-r--r--    1 root     root           144 Oct  7 01:42 requirements.in
+-rw-r--r--    1 root     root          1005 Oct  7 01:49 requirements.lock.txt
+-rwxr-xr-x    1 root     root          3953 Oct 10 06:51 reset.sh
+drwxr-xr-x    3 root     root          4096 Oct  7 15:08 scripts
+drwxr-xr-x    3 root     root           144 Oct 10 07:08 tests
+drwx------    2 root     root            36 Oct  7 15:09 tls
+-rw-r--r--    1 root     root     462674944 Oct 10 06:54 toss-market-image.tar
+drwxr-xr-x    6 root     root           105 Oct 10 07:07 venv
