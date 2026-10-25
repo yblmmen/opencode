@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: https-dashboard
+  namespace: opencode
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: https-dashboard}
+  template:
+    metadata:
+      labels: {app: https-dashboard}
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master1
+      tolerations:
+        - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
+        - {key: node-role.kubernetes.io/master, operator: Exists, effect: NoSchedule}
+      automountServiceAccountToken: false
+      securityContext: {runAsUser: 10001, runAsGroup: 10001, fsGroup: 10001}
+      containers:
+        - name: dashboard
+          image: local/https-dashboard:v2
+          imagePullPolicy: Never
+          env:
+            - {name: DB_PATH, value: /data/sessions.sqlite3}
+            - name: INGEST_TOKEN
+              valueFrom:
+                secretKeyRef: {name: dashboard-ingest, key: token}
+          ports:
+            - {name: http, containerPort: 8080}
+          readinessProbe:
+            httpGet: {path: /healthz, port: 8080}
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8080}
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 50m, memory: 128Mi}
+            limits: {cpu: "1", memory: 512Mi}
+          volumeMounts:
+            - {name: data, mountPath: /data}
+      volumes:
+        - name: data
+          hostPath: {path: /opt/opencode/dashboard-data, type: Directory}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: https-dashboard
+  namespace: opencode
+spec:
+  type: NodePort
+  selector: {app: https-dashboard}
+  ports:
+    - {name: http, port: 8080, targetPort: http, protocol: TCP, nodePort: 31800}

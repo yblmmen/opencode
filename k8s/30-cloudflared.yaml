@@ -1,0 +1,45 @@
+# Cloudflare remotely-managed Tunnel to HTTPS Flow Dashboard.
+# Create Secret/cloudflared-tunnel via scripts/install-cloudflare.sh.
+# In Cloudflare One dashboard publish:
+#   dash.innerinfo.org -> http://192.168.9.221:31800 (confirmed NodePort origin)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: opencode
+  labels:
+    app: cloudflared
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: Always
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+          env:
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared-tunnel
+                  key: TUNNEL_TOKEN
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi

@@ -1,0 +1,7 @@
+.git
+config
+data
+secrets
+dashboard-data
+CLI-Anything
+*.zip

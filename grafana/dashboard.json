@@ -1,0 +1,235 @@
+{
+  "uid": "k8s-hubble-flows",
+  "title": "Kubernetes Hubble · Flow Events & Service Graph",
+  "tags": [
+    "opencode",
+    "hubble",
+    "network"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 40,
+  "version": 1,
+  "refresh": "10s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Collector 연결 상태 (1=정상)",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "lifecycle-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "opencode_hubble_collector_connected",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {}
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "title": "최근 5분 네트워크 흐름 이벤트",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "lifecycle-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(opencode_hubble_flow_events_last5m)",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {}
+      },
+      "options": {}
+    },
+    {
+      "id": 3,
+      "title": "최근 5분 차단 흐름",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "lifecycle-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "opencode_hubble_flow_events_last5m{result=\"denied\"}",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {}
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "title": "최근 5분 이벤트 유형",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "lifecycle-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "opencode_hubble_flow_events_last5m",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {}
+      },
+      "options": {}
+    },
+    {
+      "id": 5,
+      "title": "네임스페이스별 관측 이벤트 (최근 5분)",
+      "type": "bargauge",
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "lifecycle-prom"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "topk(15,opencode_hubble_namespace_events_last5m)",
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {}
+      },
+      "options": {}
+    },
+    {
+      "id": 6,
+      "title": "실시간 Namespace·IP 네트워크 관계도 — Hubble 흐름 기반 (최근 5분)",
+      "type": "nodeGraph",
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 24,
+        "h": 13
+      },
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "lifecycle-flow"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "type": "json",
+          "source": "url",
+          "url": "http://https-dashboard.opencode.svc.cluster.local:8080/api/grafana/graph?minutes=5",
+          "url_options": {
+            "method": "GET"
+          },
+          "format": "node-graph-nodes",
+          "root_selector": "nodes",
+          "columns": [
+            {
+              "selector": "id",
+              "text": "id",
+              "type": "string"
+            },
+            {
+              "selector": "title",
+              "text": "title",
+              "type": "string"
+            },
+            {
+              "selector": "subTitle",
+              "text": "subTitle",
+              "type": "string"
+            }
+          ],
+          "parser": "simple"
+        },
+        {
+          "refId": "B",
+          "type": "json",
+          "source": "url",
+          "url": "http://https-dashboard.opencode.svc.cluster.local:8080/api/grafana/graph?minutes=5",
+          "url_options": {
+            "method": "GET"
+          },
+          "format": "node-graph-edges",
+          "root_selector": "edges",
+          "columns": [
+            {
+              "selector": "id",
+              "text": "id",
+              "type": "string"
+            },
+            {
+              "selector": "source",
+              "text": "source",
+              "type": "string"
+            },
+            {
+              "selector": "target",
+              "text": "target",
+              "type": "string"
+            },
+            {
+              "selector": "mainStat",
+              "text": "mainStat",
+              "type": "string"
+            },
+            {
+              "selector": "secondaryStat",
+              "text": "secondaryStat",
+              "type": "string"
+            }
+          ],
+          "parser": "simple"
+        }
+      ],
+      "options": {}
+    }
+  ]
+}

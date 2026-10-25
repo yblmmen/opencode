@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+ARG HUBBLE_VERSION=v1.20.2
+ARG TARGETARCH=amd64
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -fsSLo /tmp/hubble.tgz "https://github.com/cilium/hubble/releases/download/${HUBBLE_VERSION}/hubble-linux-${TARGETARCH}.tar.gz" \
+    && curl -fsSLo /tmp/hubble.sha256sum "https://github.com/cilium/hubble/releases/download/${HUBBLE_VERSION}/hubble-linux-${TARGETARCH}.tar.gz.sha256sum" \
+    && cd /tmp && cp hubble.tgz "hubble-linux-${TARGETARCH}.tar.gz" \
+    && sed -i "s/hubble-linux-${TARGETARCH}.tar.gz/hubble-linux-${TARGETARCH}.tar.gz/" hubble.sha256sum \
+    && sha256sum -c hubble.sha256sum \
+    && tar -xzf hubble.tgz -C /usr/local/bin hubble \
+    && rm -f /tmp/hubble* \
+    && useradd -u 10001 -m collector
+WORKDIR /app
+COPY collector/ /app/
+USER 10001:10001
+CMD ["python3", "-u", "/app/collector.py"]

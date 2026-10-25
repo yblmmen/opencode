@@ -1,0 +1,6 @@
+FROM grafana/grafana:12.1.0
+# Official Grafana Labs Infinity data source for native Node Graph panel.
+USER root
+RUN grafana cli plugins install yesoreyeram-infinity-datasource \
+    && chown -R 472:472 /var/lib/grafana/plugins
+USER 472

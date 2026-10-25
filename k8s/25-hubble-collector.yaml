@@ -1,0 +1,42 @@
+# Long-running Hubble Relay -> dashboard collector. Existing Hubble installation untouched.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hubble-collector
+  namespace: opencode
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: hubble-collector}
+  template:
+    metadata:
+      labels: {app: hubble-collector}
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master1
+      tolerations:
+        - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
+        - {key: node-role.kubernetes.io/master, operator: Exists, effect: NoSchedule}
+      automountServiceAccountToken: false
+      containers:
+        - name: collector
+          image: local/hubble-collector:v2
+          imagePullPolicy: Never
+          env:
+            - name: HUBBLE_SERVER
+              valueFrom: {configMapKeyRef: {name: opencode-runtime-settings, key: HUBBLE_SERVER}}
+            - {name: DASHBOARD_URL, value: 'http://https-dashboard.opencode.svc.cluster.local:8080'}
+            # Empty = TCP + UDP all ports, across ALL namespaces
+            - name: FILTER_PORTS
+              valueFrom: {configMapKeyRef: {name: opencode-runtime-settings, key: FILTER_PORTS}}
+            - name: FILTER_NAMESPACES
+              valueFrom: {configMapKeyRef: {name: opencode-runtime-settings, key: FILTER_NAMESPACES}}
+            - name: HUBBLE_TLS
+              valueFrom: {configMapKeyRef: {name: opencode-runtime-settings, key: HUBBLE_TLS}}
+            - name: INGEST_TOKEN
+              valueFrom:
+                secretKeyRef: {name: dashboard-ingest, key: token}
+          resources:
+            requests: {cpu: 50m, memory: 128Mi}
+            limits: {cpu: '1', memory: 512Mi}

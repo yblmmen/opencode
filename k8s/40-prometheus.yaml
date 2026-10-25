@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: lifecycle-prometheus-config, namespace: opencode}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+    scrape_configs:
+      - job_name: hubble-bridge
+        static_configs:
+          - targets: ['https-dashboard.opencode.svc.cluster.local:8080']
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: lifecycle-prometheus, namespace: opencode}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector: {matchLabels: {app: lifecycle-prometheus}}
+  template:
+    metadata: {labels: {app: lifecycle-prometheus}}
+    spec:
+      nodeSelector: {kubernetes.io/hostname: master1}
+      tolerations:
+        - {key: node-role.kubernetes.io/control-plane, operator: Exists, effect: NoSchedule}
+        - {key: node-role.kubernetes.io/master, operator: Exists, effect: NoSchedule}
+      automountServiceAccountToken: false
+      securityContext: {runAsUser: 65534, runAsGroup: 65534, fsGroup: 65534}
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v3.5.0
+          args: ['--config.file=/etc/prometheus/prometheus.yml','--storage.tsdb.path=/prometheus','--storage.tsdb.retention.time=7d','--web.enable-lifecycle']
+          ports: [{name: http, containerPort: 9090}]
+          readinessProbe: {httpGet: {path: /-/ready, port: 9090}, periodSeconds: 10}
+          resources: {requests: {cpu: 100m, memory: 256Mi}, limits: {cpu: '1', memory: 1Gi}}
+          volumeMounts:
+            - {name: config, mountPath: /etc/prometheus/prometheus.yml, subPath: prometheus.yml, readOnly: true}
+            - {name: data, mountPath: /prometheus}
+      volumes:
+        - {name: config, configMap: {name: lifecycle-prometheus-config}}
+        - {name: data, hostPath: {path: /opt/opencode/prometheus-data, type: Directory}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: lifecycle-prometheus, namespace: opencode}
+spec:
+  selector: {app: lifecycle-prometheus}
+  ports: [{name: http, port: 9090, targetPort: 9090}]

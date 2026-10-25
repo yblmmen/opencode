@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencode
+  namespace: opencode
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: opencode
+  template:
+    metadata:
+      labels:
+        app: opencode
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: master1
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      automountServiceAccountToken: false
+      containers:
+        - name: opencode
+          image: local/opencode:v2
+          imagePullPolicy: Never
+          command: ["/bin/sh", "-c", "exec tail -f /dev/null"]
+          workingDir: /home/toss
+          stdin: true
+          tty: true
+          env:
+            - {name: HOME, value: /root}
+            - {name: TERM, value: xterm-256color}
+            - {name: XDG_CONFIG_HOME, value: /root/.config}
+            - {name: XDG_DATA_HOME, value: /root/.local/share}
+            - {name: XDG_CACHE_HOME, value: /root/.cache}
+            - name: OLLAMA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ollama-api-key
+                  key: OLLAMA_API_KEY
+          resources:
+            requests: {cpu: 100m, memory: 512Mi}
+            limits: {cpu: "2", memory: 4Gi}
+          volumeMounts:
+            - {name: workspace, mountPath: /home/toss}
+            - {name: source, mountPath: /workspace/opencode-project}
+            - {name: config, mountPath: /root/.config/opencode}
+            - {name: share, mountPath: /root/.local/share/opencode}
+            - {name: cache, mountPath: /root/.cache/opencode}
+      volumes:
+        - name: workspace
+          hostPath: {path: /home/toss, type: Directory}
+        - name: source
+          hostPath: {path: /opt/opencode, type: Directory}
+        - name: config
+          hostPath: {path: /opt/opencode/config, type: Directory}
+        - name: share
+          hostPath: {path: /opt/opencode/data/share, type: Directory}
+        - name: cache
+          hostPath: {path: /opt/opencode/data/cache, type: Directory}

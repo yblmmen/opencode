@@ -1,6 +1,6 @@
-# OpenCode · Cilium Hubble · TCP Lifecycle Monitor v2
+# OpenCode · Cilium Hubble · TCP Lifecycle Monitor v2 — 최종 설치·운영 매뉴얼
 
-> **기준 환경:** Kubernetes v1.36.x / Rocky Linux 9.8 / containerd / master1(192.168.9.221), worker1~3
+> **기준 환경:** Kubernetes v1.36.x / Rocky Linux 9.8 / containerd / master1(192.168.9.221), worker1~3. 기존 Cilium/Hubble Relay는 정상 운영 중이며 **변경하지 않습니다**.
 >
 > **목표:** 과거 OpenCode 설치를 백업·완전 삭제한 후 v2를 새로 배포합니다. 전체 네임스페이스 Hubble 흐름, 실시간 관계도, IP별 TCP SYN/SYN/ACK/ACK/FIN/RST·Drop 분석, Grafana/Prometheus, Cloudflare Tunnel 포함. Draw.io 제외.
 
@@ -24,9 +24,7 @@
 
 ### 구성도
 
-<img width="1087" height="825" alt="image" src="https://github.com/user-attachments/assets/ce94e71b-a870-4bd9-b9cd-ff9e2066560e" />
-
- 
+![v2 구성도](architecture.svg)
 
 - 기존 Cilium/Hubble은 모든 네임스페이스의 네트워크 이벤트를 Relay에서 제공.
 - `hubble-collector`는 TCP/UDP Flow를 수집하고 대시보드의 인증된 수집 API로 전송.
