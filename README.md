@@ -1,4 +1,4 @@
-# OpenCode · Cilium Hubble · TCP Lifecycle Monitor v2 — 최종 설치·운영 매뉴얼
+# OpenCode · Cilium Hubble · TCP Lifecycle Monitor v2
 
 > **기준 환경:** Kubernetes v1.36.x / Rocky Linux 9.8 / containerd / master1(192.168.9.221), worker1~3. 기존 Cilium/Hubble Relay는 정상 운영 중이며 **변경하지 않습니다**.
 >
